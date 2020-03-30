@@ -47,7 +47,7 @@ class TunnitSisaan extends Component {
         // send an asynchronous request to the backend
         const tunnitJson = JSON.stringify(tunnit);
         console.log("tunnitJson = " + tunnitJson);
-        const apiUrl= 'https://localhost:5001/api/tunnit/sisaan';
+        const apiUrl= 'https://localhost:5001/api/tunnit/ulos';
         //    const apiUrl= 'https://webapiharjoituskoodi20191128035915.azurewebsites.net/nw/logins';
         fetch(apiUrl, {
             method: "POST",
@@ -76,7 +76,7 @@ class TunnitSisaan extends Component {
                     <input type="text" placeholder="Luokkahuone" onChange={this.handleChangeLuokkahuoneID} />
                     <input type="text" placeholder="OppilasID" onChange={this.handleChangeOppilasID} />                    
                     <br />               
-                    <button className="btn-circle" type="submit">Sisään leimaus</button>
+                    <button className="btn-circle" type="submit">Ulos</button>
                 </form>
             </div>
         );
