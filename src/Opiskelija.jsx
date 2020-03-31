@@ -48,7 +48,7 @@ class Oppilas extends Component {
   }
 
   HaeNWRestApista() {
-    let uri = 'https://localhost:5001/api/tunnit';
+    let uri = 'https://localhost:5001/api/opettaja/r?offset='+this.state.start+'&limit='+this.state.take;
     // let uri = 'https://webapiharjoituskoodi20191128035915.azurewebsites.net/nw/customer/r?offset='+this.state.start+'&limit='+this.state.take;
     console.log("HaeOmaRestistä " + uri);
     fetch(uri)
@@ -68,12 +68,11 @@ class Oppilas extends Component {
     let viesti = "NW Käyttäjä-rivejä: " + this.state.tunnit.length;
     let taulukko = [];
     //Luodaan taulukon otsikot
-    let tHeaders=<tr><th>ID</th><th>Luokkahuone</th><th>Oppilas</th><th>Sisään</th><th>Ulos</th><th></th></tr>;
+    let tHeaders=<tr><th>Luokkahuone</th><th>Oppilas</th><th>Sisään</th><th>Ulos</th></tr>;
     if (this.state.tunnit.length > 0) {
         for (let index = 0; index < this.state.tunnit.length; index++) {
             const element = this.state.tunnit[index];
             taulukko.push(<tr key={element.tunnitId}>
-            <td >{element.tunnitId}</td>
             <td>{element.luokkahuoneId}</td>
             <td>{element.oppilasId}</td>
             <td>{element.sisaan}</td> 

@@ -2,18 +2,20 @@ import React, { Component } from 'react';
 import './App.css';
 
 
-class TunnitSisaan extends Component {
+class TunnitAdd extends Component {
     constructor(props) {
         super(props);
-        this.state = { TunnitID: '', LuokkahuoneID: '', OppilasID: ''};
+        this.state = { TunnitID: '', LuokkahuoneID: '', OppilasID: '', Sisaan: '', Ulos: ''};
         this.handleChangeTunnitID = this.handleChangeTunnitID.bind(this);
         this.handleChangeLuokkahuoneID = this.handleChangeLuokkahuoneID.bind(this);
         this.handleChangeOppilasID = this.handleChangeOppilasID.bind(this);
+        this.handleChangeSisaan = this.handleChangeSisaan.bind(this);
+        this.handleChangeUlos = this.handleChangeUlos.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     dismiss() {
-        console.log("Ollaan TunnitSisaan -dismiss()-rutiinissa - - - - - - ");
+        console.log("Ollaan NWLoginAdd -dismiss()-rutiinissa - - - - - - ");
         this.props.unmountMe();
     }
 
@@ -29,25 +31,34 @@ class TunnitSisaan extends Component {
         var syöte = event.target.value;
         this.setState({ ...this.state, OppilasID: syöte });
     }
-
+    handleChangeSisaan(event) {
+        var syöte = event.target.value;
+        this.setState({ ...this.state, Sisaan: syöte });
+    }
+    handleChangeUlos(event) {
+        var syöte = event.target.value;
+        this.setState({ ...this.state, Ulos: syöte });
+    }
     handleSubmit(event) {
-        alert('Lähetettiin tunnit: ' + this.state.LuokkahuoneID);
+        alert('Lähetettiin tunti: ' + this.state.LuokkahuoneID + ' ' + this.state.OppilasID);
         event.preventDefault();
         this.InsertoiKantaan();
     }
 
     InsertoiKantaan() {
-        // Luodaan tunnitobjekti, johon haetaan state:sta tiedot                     
-        const tunnit = {
+        // Luodaan tuntiobjekti, johon haetaan state:sta tiedot                     
+        const tunti = {
             TunnitID: this.state.TunnitId,
             LuokkahuoneID: this.state.LuokkahuoneID,
-            OppilasID: this.state.OppilasID
+            OppilasID: this.state.OppilasID,
+            Sisaan: this.state.Sisaan,
+            Ulos: this.state.Ulos
         };
 
         // send an asynchronous request to the backend
-        const tunnitJson = JSON.stringify(tunnit);
-        console.log("tunnitJson = " + tunnitJson);
-        const apiUrl= 'https://localhost:5001/api/tunnit/ulos';
+        const tuntiJson = JSON.stringify(tunti);
+        console.log("tuntiJson = " + tuntiJson);
+        const apiUrl = 'https://localhost:5001/api/opettaja/leimaus';
         //    const apiUrl= 'https://webapiharjoituskoodi20191128035915.azurewebsites.net/nw/logins';
         fetch(apiUrl, {
             method: "POST",
@@ -55,7 +66,7 @@ class TunnitSisaan extends Component {
                 "Accept": "application/json",
                 "Content-Type": "application/json"
             },
-            body: tunnitJson
+            body: tuntiJson
         }).then((response) => response.json())
             .then((json) => {
                 // store the data returned from the backend to the current state
@@ -66,20 +77,24 @@ class TunnitSisaan extends Component {
                     this.dismiss();
                 }
             });
-    }
+        }
 
     render()
      {
         return (
             <div>
                 <form className="box3" onSubmit={this.handleSubmit}>
-                    <input type="text" placeholder="Luokkahuone" onChange={this.handleChangeLuokkahuoneID} />
-                    <input type="text" placeholder="OppilasID" onChange={this.handleChangeOppilasID} />                    
-                    <br />               
-                    <button className="btn-circle" type="submit">Ulos</button>
+
+                    <input type="text" placeholder="LuokkahuoneID" onChange={this.handleChangeLuokkahuoneID} />
+                    <input type="text" placeholder="OppilasID" onChange={this.handleChangeOppilasID} />
+                    <input type="datetime-local" placeholder="Sisaan" onChange={this.handleChangeSisaan} />
+                    <input type="datetime-local" placeholder="Ulos" onChange={this.handleChangeUlos}/>                  
+                    <br />
+                
+                    <button type="submit">Tallenna</button>
                 </form>
             </div>
         );
     }
 }
-export default TunnitSisaan;
+export default TunnitAdd;
